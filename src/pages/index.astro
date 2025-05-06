@@ -1,0 +1,55 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import { Image } from "astro:assets";
+import "../styles/global.css";
+import cake1 from "../assets/cake1.jpg";
+import cake2 from "../assets/cake2.jpg";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <section class="relative bg-white">
+        <h1 class="top-0 z-10 sticky bg-white text-center">Pregnancies</h1>
+        <div class="gap-2 grid grid-cols-3 p-4 w-full">
+          <Image src={cake1} alt="Birthday Cake" />
+          <Image src={cake2} alt="Birthday Cake" />
+          <Image src={cake1} alt="Birthday Cake" />
+        </div>
+      </section>
+      <section class="relative bg-white">
+        <h1 class="top-0 z-10 sticky bg-white text-center">Birthdays</h1>
+        <div class="gap-2 grid grid-cols-3 p-4 w-full">
+          <Image src={cake1} alt="Birthday Cake" />
+          <Image src={cake2} alt="Birthday Cake" />
+          <Image src={cake1} alt="Birthday Cake" />
+        </div>
+      </section>
+      <section class="relative bg-white">
+        <h1 class="top-0 z-10 sticky bg-white text-center">Engagements</h1>
+        <div class="gap-2 grid grid-cols-3 p-4 w-full">
+          <Image src={cake1} alt="Birthday Cake" />
+          <Image src={cake2} alt="Birthday Cake" />
+          <Image src={cake1} alt="Birthday Cake" />
+        </div>
+      </section>
+      <section class="relative bg-white">
+        <h1 class="top-0 z-10 sticky bg-white text-center">Gender Reveals</h1>
+        <div class="gap-2 grid grid-cols-3 p-4 w-full">
+          <Image src={cake1} alt="Birthday Cake" />
+          <Image src={cake2} alt="Birthday Cake" />
+          <Image src={cake1} alt="Birthday Cake" />
+        </div>
+      </section>
+    </main>
+    <Footer />
+  </body>
+</html>
