@@ -1,0 +1,33 @@
+---
+import SwiperCarousel from "./SwiperCarousel.astro";
+import img1 from "../assets/1.jpg";
+import img2 from "../assets/2.jpg";
+import img3 from "../assets/3.jpg";
+import img4 from "../assets/4.jpg";
+import img5 from "../assets/5.jpg";
+import img7 from "../assets/7.jpg";
+import img8 from "../assets/8.jpg";
+import img9 from "../assets/9.jpg";
+
+const mySlides = [
+  { id: "1", src: img5, alt: "Scenic mountain view" },
+  { id: "2", src: img3, alt: "Forest path in autumn" },
+  { id: "3", src: img2, alt: "City skyline at night" },
+  { id: "4", src: img4, alt: "Abstract art" },
+  { id: "5", src: img1, alt: "Cozy fireplace" },
+];
+---
+
+<section class="min-h-dvh bg-accent-headings">
+  <div class="slider-section">
+    <SwiperCarousel
+      slides={mySlides}
+      slidesPerView={1}
+      spaceBetween={0}
+      loop={true}
+      autoplay={true}
+      delay={3000}
+      class="first-slider"
+    />
+  </div>
+</section>

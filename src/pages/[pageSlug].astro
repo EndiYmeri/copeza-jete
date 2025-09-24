@@ -1,0 +1,81 @@
+---
+import pages from "../config/pages.json";
+import CategoryLayout from "../layouts/CategoryLayout.astro";
+import type { MasonryImages, WordPressImageDetails } from "../types/image"; // Ensure WordPressImageDetails is imported
+import { getMediaDetails } from "../utils/helpers"; // Assuming getMediaDetails extracts source_url
+import { getImageByID } from "../utils/wordpressAPI"; // Assuming getImageByID fetches image data
+
+export function getStaticPaths() {
+  return pages.map((page) => {
+    return { params: { pageSlug: page.slug } };
+  });
+}
+const { pageSlug } = Astro.params;
+
+console.log({ pageSlug });
+const foundPage = pages.find((page) => page.slug === pageSlug);
+
+let masonryImages: MasonryImages = {
+  col1: [],
+  col2: [],
+  col3: [],
+  col4: [],
+};
+
+// Array to collect all image URLs for preloading
+let allImageUrls: string[] = [];
+
+if (foundPage) {
+  // Helper to fetch images for a column and add their URLs to the preload list
+  const fetchColumnImages = async (
+    columnData: Array<{ image: number }> | undefined
+  ) => {
+    if (!columnData) return [];
+    const imagePromises = columnData.map((colImage) =>
+      getImageByID(colImage.image)
+    );
+    const fetchedImages = await Promise.all(imagePromises);
+    const detailedImages = fetchedImages.map((image) => getMediaDetails(image));
+
+    // Add the specific URL used by CustomImage to the preload list
+    detailedImages.forEach((img) => {
+      // Assuming getMediaDetails returns an object like WordPressImageDetails
+      // and CustomImage uses the medium_large size on inner pages
+      if (img?.medium_large?.source_url) {
+        allImageUrls.push(img.medium_large.source_url);
+      } else if (typeof img === "string") {
+        // Fallback if getMediaDetails sometimes returns just a URL
+        allImageUrls.push(img);
+      }
+      // Add other sizes if needed for different viewports or uses
+      // if (img?.full?.source_url) {
+      //     allImageUrls.push(img.full.source_url);
+      // }
+    });
+
+    return detailedImages;
+  };
+
+  masonryImages.col1 = await fetchColumnImages(foundPage.masonryGrid?.column_1);
+  masonryImages.col2 = await fetchColumnImages(foundPage.masonryGrid?.column_2);
+  masonryImages.col3 = await fetchColumnImages(foundPage.masonryGrid?.column_3);
+  masonryImages.col4 = await fetchColumnImages(foundPage.masonryGrid?.column_4);
+}
+
+// Filter out any potential undefined or null URLs and ensure uniqueness
+const uniqueImageUrls = [
+  ...new Set(allImageUrls.filter((url) => url && typeof url === "string")),
+];
+
+console.log({ uniqueImageUrls });
+---
+
+{
+  foundPage && (
+    <CategoryLayout
+      masonryImages={masonryImages}
+      title={foundPage?.title}
+      imageUrls={uniqueImageUrls}
+    />
+  )
+}

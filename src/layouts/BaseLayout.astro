@@ -1,0 +1,30 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+
+interface Props {
+  siteTitle: string;
+  imagesToPreload?: string[];
+  siteDescription: string;
+}
+
+const { siteTitle, siteDescription, imagesToPreload } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead
+      title={siteTitle}
+      description={siteDescription}
+      imageUrls={imagesToPreload}
+    />
+  </head>
+  <body class="">
+    <Header />
+    <slot />
+    <Footer />
+    <div class="bg-bgPrimary px-4 py-5 container"></div>
+  </body>
+</html>

@@ -1,0 +1,69 @@
+---
+import CountUp from "./ReactBits/CountUp";
+import TrueFocus from "./ReactBits/TrueFocus";
+
+const stats = [
+  { value: 200, suffix: "+", text: "Evente të mbuluara" },
+  { value: 5, suffix: "+", text: "Vite eksperiencë" },
+  { value: 500, suffix: "+", text: "Orë të edituara me pasion" },
+  { value: 30, suffix: "+", text: "Vendodhje" },
+];
+
+const specialStat = {
+  value: 0,
+  suffix: "",
+  text: "Momente të humbura",
+};
+---
+
+<section class="bg-[#7F886E] px-6 py-16 md:py-24 w-full text-[#f2f1ec]">
+  <div class="mx-auto max-w-6xl">
+    <div class="gap-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mb-16">
+      {
+        stats.map((stat, index) => (
+          <div class="flex flex-col items-center text-center">
+            <div class="mb-2">
+              <CountUp
+                client:load
+                from={0}
+                to={stat.value}
+                separator=","
+                direction="up"
+                duration={1}
+                className="text-5xl count-up-text"
+              />
+            </div>
+            <p class="font-CormorantGaramond font-medium text-xl">
+              {stat.text}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+
+    <div
+      class="flex justify-evenly items-end gap-4 mt-12 pt-12 border-[#f2f1ec]/30 border-t"
+    >
+      <div class="items-center grid">
+        <TrueFocus client:load sentence="0 Momente te humbura" />
+      </div>
+      <div class="items-center grid">
+        <svg width="200" height="100" viewBox="0 0 200 100">
+          <path
+            d="M20,50
+           C20,20 80,20 100,50
+           C120,80 180,80 180,50
+           C180,20 120,20 100,50
+           C80,80 20,80 20,50"
+            fill="none"
+            stroke="white"
+            stroke-width="4"
+            stroke-linecap="round"></path>
+        </svg>
+        <div class="font-CormorantGaramond font-light text-2xl text-center">
+          Copëza jete
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

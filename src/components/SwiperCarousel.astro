@@ -1,0 +1,265 @@
+---
+// src/components/SwiperCarousel.astro
+import { Image } from "astro:assets"; // For optimized images, optional but recommended
+import type { HTMLAttributes } from "astro/types";
+import TrueFocus from "./ReactBits/TrueFocus";
+
+// Define the props for the component
+interface Props extends HTMLAttributes<"div"> {
+  slides: {
+    id: string;
+    src: ImageMetadata;
+    alt: string;
+    // Add more properties for your slide content if needed
+  }[];
+  slidesPerView?: number | "auto";
+  spaceBetween?: number;
+  loop?: boolean;
+  centeredSlides?: boolean;
+  autoplay?: boolean;
+  delay?: number; // Autoplay delay in ms
+}
+
+const {
+  slides,
+
+  class: className, // Rename 'class' to 'className' to avoid conflict, if needed
+  ...attrs // Capture any extra div attributes
+} = Astro.props;
+
+// Serialize complex props into data attributes for the client-side script
+// This is crucial for passing non-string/number values
+
+// Use JSON.stringify to pass the config object to a data attribute
+---
+
+<div class:list={["swiper-container", className]} {...attrs}>
+  <div class="swiper-wrapper">
+    {
+      slides.map((slide) => (
+        <div class="swiper-slide">
+          <Image
+            src={slide.src}
+            alt={slide.alt}
+            loading="eager"
+            format={"jpeg"}
+          />
+        </div>
+      ))
+    }
+  </div>
+
+  <div
+    class="flex justify-between items-center-safe gap-2 px-15 md:px-25 swiper-buttons-container"
+  >
+    <div class="swiper-button-prev">
+      <div class="justify-center gap-2 grid text-center">
+        <div
+          class="relative border-accent-background before:!border-accent-background after:!border-accent-background border-b w-[110px] prev-button-arrow"
+        >
+        </div>
+      </div>
+    </div>
+    <div
+      class="md:hidden z-10 flex items-center gap-1 -translate-y-1/2 text-accent-background swiper-button-count"
+    >
+      <div class="hero-slide-next-button-current-slide">01</div>
+      <div>/</div>
+      <div class="hero-slide-next-button-slide-length">05</div>
+    </div>
+    <div class="swiper-button-next">
+      <div class="justify-center gap-2 grid text-center">
+        <div
+          class="max-md:hidden text-accent-background hero-slide-next-button-current-slide"
+        >
+          01
+        </div>
+        <div
+          class="relative border-accent-background before:!border-accent-background after:!border-accent-background border-b w-[110px] next-button-arrow"
+        >
+        </div>
+        <div
+          class="max-md:hidden text-accent-background hero-slide-next-button-slide-length"
+        >
+          05
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style is:global>
+  /* Import Swiper styles globally or target them specifically */
+  @import "swiper/css";
+  @import "swiper/css/navigation";
+  @import "swiper/css/pagination";
+  @import "swiper/css/effect-fade";
+  @import "swiper/css/autoplay";
+
+  .swiper-container {
+    width: 100%;
+    max-width: 100vw; /* Limit max width for better presentation */
+    margin: 0 auto;
+    height: 100dvh; /* Full height for the container */
+    position: relative; /* Needed for navigation/pagination positioning */
+    overflow: hidden; /* Hide overflow from slides */
+  }
+
+  .swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: auto; /* Allow content to dictate height */
+    box-sizing: border-box; /* Include padding/border in element's total width/height */
+    background-position: center;
+    background-size: cover;
+    position: relative;
+  }
+
+  .swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-position: center;
+    object-fit: cover;
+  }
+
+  /* Custom styling for navigation buttons (optional) */
+  .swiper-buttons-container {
+    position: absolute !important;
+    bottom: 40px !important;
+    color: white;
+    width: 100%;
+    right: 0;
+    left: 0;
+  }
+  .swiper-button-next {
+    position: relative !important;
+  }
+  .swiper-button-prev {
+    position: relative !important;
+  }
+
+  .prev-button-arrow::before {
+    content: "";
+    width: 10px;
+    border-bottom: 1px solid;
+    position: absolute;
+    transform-origin: 0%;
+    left: 0;
+    transform: rotate(-45deg);
+  }
+  .prev-button-arrow::after {
+    content: "";
+    width: 10px;
+    border-bottom: 1px solid;
+    position: absolute;
+    left: 0;
+    transform-origin: 0%;
+    transform: rotate(45deg);
+  }
+  .next-button-arrow::before {
+    content: "";
+    width: 10px;
+    border-bottom: 1px solid;
+    position: absolute;
+    transform-origin: 100%;
+    right: 0;
+    transform: rotate(-45deg);
+  }
+  .next-button-arrow::after {
+    content: "";
+    width: 10px;
+    border-bottom: 1px solid;
+    position: absolute;
+    right: 0;
+    transform-origin: 100%;
+    transform: rotate(45deg);
+  }
+
+  .swiper-button-prev:after,
+  .swiper-button-next:after {
+    content: "";
+  }
+
+  /* Custom styling for pagination bullets (optional) */
+  .swiper-pagination-bullet-active {
+    background: #007aff;
+  }
+</style>
+
+<script is:inline type="module">
+  // Import Swiper and modules directly in the script
+  // Note: These imports are client-side only due to 'type="module"'
+  import Swiper from "../../node_modules/swiper";
+  import {
+    Navigation,
+    Pagination,
+    Autoplay,
+    EffectFade,
+  } from "../../node_modules/swiper/modules";
+
+  // Function to initialize a single Swiper instance
+  function initializeSwiper(container, swiperNextButtonCurrentSlide) {
+    // Assign modules based on whether features are enabled
+    const modules = [Pagination, Navigation, EffectFade, Autoplay]; // Pagination and Navigation are almost always needed
+
+    const HeroSwiper = new Swiper(container, {
+      modules: modules,
+      slidesPerView: 1,
+      spaceBetween: 0,
+      loop: true,
+      effect: "fade",
+      fadeEffect: { crossFade: true },
+      centeredSlides: true,
+      navigation: {
+        nextEl: container.querySelector(".swiper-button-next"),
+        prevEl: container.querySelector(".swiper-button-prev"),
+      },
+      autoplay: {
+        delay: 10000,
+        stopOnLastSlide: false,
+        disableOnInteraction: false,
+      },
+      breakpoints: {
+        640: {
+          slidesPerView: 1,
+          spaceBetween: 0,
+        },
+        768: {
+          slidesPerView: 1,
+          spaceBetween: 0,
+        },
+        1024: {
+          slidesPerView: 1,
+          spaceBetween: 0,
+        },
+      },
+    });
+
+    HeroSwiper.on("slideChange", () => {
+      swiperNextButtonCurrentSlides.forEach((element) => {
+        element.textContent = `0${HeroSwiper.realIndex + 1}`;
+      });
+    });
+  }
+
+  // Find all Swiper containers that need initialization
+  // Using a custom class to target only these instances,
+  // or you could use a more specific selector if multiple Swipers are on page
+  const swiperContainer = document.querySelector(".swiper-container");
+  const swiperNextButtonCurrentSlides = document.querySelectorAll(
+    ".hero-slide-next-button-current-slide"
+  );
+
+  // Loop through each container and initialize Swiper
+  initializeSwiper(swiperContainer, swiperNextButtonCurrentSlides);
+
+  // Optional: If you need to re-initialize Swiper on content changes or dynamic additions,
+  // you would need a MutationObserver or similar logic. For most static Astro sites,
+  // simply running on load is sufficient.
+</script>

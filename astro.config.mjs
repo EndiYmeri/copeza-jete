@@ -1,15 +1,29 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
-import mdx from '@astrojs/mdx';
-import sitemap from '@astrojs/sitemap';
+import { defineConfig } from "astro/config";
+import tailwindcss from "@tailwindcss/vite";
+import react from "@astrojs/react";
+import { downloadWordpressDataToJSON } from "./wpApiIntegration";
 
-import tailwindcss from '@tailwindcss/vite';
-
+// Define a custom integration
+function wordpressAPIIntegration() {
+  return {
+    name: "Use wp api",
+    hooks: {
+      "astro:build:done": async () => {
+        // Call your custom function here
+        await downloadWordpressDataToJSON();
+      },
+      "astro:config:setup": async () => {
+        // Call your custom function here
+        await downloadWordpressDataToJSON();
+      },
+    },
+  };
+}
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://example.com',
-  integrations: [mdx(), sitemap()],
-
+  site: "https://example.com",
+  integrations: [react(), wordpressAPIIntegration()],
   vite: {
     plugins: [tailwindcss()],
   },

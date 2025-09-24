@@ -1,0 +1,23 @@
+---
+import anna from "../assets/anna.jpeg";
+import { Image } from "astro:assets"; // For optimized images, optional but recommended
+---
+
+<section class="flex flex-col mx-auto px-5 py-5 h-dvh container">
+  <div class="my-5 h-min text-center">Tirana, Albania</div>
+  <div class="gap-2 grid lg:grid-cols-2 h-full">
+    <div class="order-1 lg:order-0">
+      <Image
+        src={anna}
+        alt="Anna's portrait"
+        class="w-full h-full object-cover"
+      />
+    </div>
+    <div class="place-content-center-safe grid p-10 h-full">
+      <p>
+        Ckemi jam Anna dhe jam fotografe, jam e fejuara Endit -> cuni qe ka bo
+        website-in
+      </p>
+    </div>
+  </div>
+</section>

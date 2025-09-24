@@ -1,0 +1,74 @@
+---
+// CameraEffect.astro
+interface Props {
+  imageUrl?: string;
+  altText?: string;
+}
+
+const {
+  imageUrl = "/api/placeholder/600/400",
+  altText = "Camera effect image",
+} = Astro.props;
+---
+
+<div
+  class="relative shadow-lg mx-auto rounded-md overflow-hidden camera-container"
+>
+  <div class="relative w-full h-full image-container">
+    <img
+      src={imageUrl}
+      alt={altText}
+      class="w-full h-full object-cover transition-transform duration-300"
+    />
+
+    <!-- Flash overlay -->
+    <div
+      class="absolute inset-0 bg-white opacity-0 pointer-events-none flash-overlay"
+    >
+    </div>
+
+    <!-- Shutter animation -->
+    <div
+      class="absolute inset-0 flex justify-center items-center opacity-0 pointer-events-none shutter-animation"
+    >
+      <div class="bg-black w-full h-full"></div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .animate-flash {
+    animation: flash 0.5s forwards;
+  }
+
+  @keyframes flash {
+    0% {
+      opacity: 0;
+    }
+    20% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .animate-shutter {
+    animation: shutter 0.3s forwards;
+  }
+
+  @keyframes shutter {
+    0% {
+      opacity: 1;
+      transform: scale(0);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1);
+    }
+  }
+</style>
