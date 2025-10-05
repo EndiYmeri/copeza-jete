@@ -1,12 +1,11 @@
 ---
-import "../styles/global.css";
-import FactsReact from "../components/FactsReact";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Hero from "../components/Hero.astro";
 import { getImageByID } from "../utils/wordpressAPI";
-import ScrollReveal from "../components/ReactBits/ScrollReveal";
-import TrueFocus from "../components/ReactBits/TrueFocus";
+import ScrollReveal from "../components/ui/ScrollReveal";
 import Facts from "../components/Facts.astro";
+import AboutUs from "../components/AboutUs.astro";
+import { FocusCards } from "../components/ui/FocusCards";
 
 const imagesIDs: { image: number }[] = [
   {
@@ -37,8 +36,12 @@ const getImagesByIDs = async (imageIDs: { image: number }[]) => {
   return await Promise.all(promises);
 };
 const imagesData = await getImagesByIDs(imagesIDs);
+const cards = imagesData.map((image) => ({
+  title: image.title.rendered,
+  src: image.media_details.sizes.medium_large.source_url,
+  category: image.acf.category,
+}));
 
-console.log("Images Data:", imagesData);
 ---
 
 <BaseLayout
@@ -46,7 +49,9 @@ console.log("Images Data:", imagesData);
   siteDescription="fotograf, fotografi natyre, foto artistike"
 >
   <Hero />
-  <div class="mx-auto container">
+  <AboutUs />
+  <FocusCards cards={cards} client:idle/>
+  <div class="mx-auto container scroll-mt-0">
     <ScrollReveal
       client:only
       baseOpacity={0}
@@ -54,13 +59,14 @@ console.log("Images Data:", imagesData);
       baseRotation={0}
       blurStrength={10}
       textClassName="text-center"
-      containerClassName="px-4 h-dvh place-content-center grid"
+      containerClassName="px-4 h-[40dvh] lg:h-dvh place-content-center grid"
     >
       Më shumë se një imazh, një copëz jete. Çdo fotografi ka një histori për të
       treguar. Ajo kap thelbin e momenteve, duke i shndërruar ato në kujtime që
       do t'i mbani përjetësisht. Një copëz jete e shndërruar në art.
     </ScrollReveal>
   </div>
+ 
 
   <Facts />
 

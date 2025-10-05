@@ -1,27 +1,52 @@
 ---
-import pages from "../config/pages.json";
-import MenuLink from "./MenuLink.astro";
+import MenuLink from "./common/MenuLink.astro";
 
-const menuLinks = pages.map((page) => {
-  return {
-    slug: page.slug,
-    title: page.title,
-  };
-});
 ---
 
-<header class="z-50 fixed bg-transparent w-full">
-  <div class="mx-auto px-5 py-7 container">
+<header id="main-header" class="z-50 fixed bg-transparent w-full">
+  <div class="mx-auto px-5 py-7 bg-transparent  container transition-all duration-300 rounded-lg">
     <div class="flex justify-between items-center">
       <a
         href="/"
-        class="text-2xl leading-16 text-accent-background cursor-pointer"
+        id="logo-text"
+        class="text-2xl leading-1 py-5 text-accent-background cursor-pointer"
         >Copëza Jete</a
       >
-      <div>
-        <MenuLink>Sete</MenuLink>
-        <MenuLink>Kontakt</MenuLink>
+      <div class="hidden md:flex">
+        <MenuLink class={'menu-item'}>Sete</MenuLink>
+        <MenuLink class={'menu-item'}>Kontakt</MenuLink>
       </div>
     </div>
   </div>
 </header>
+
+<script>
+  const header = document.getElementById('main-header');
+  const headerContainer = header?.querySelector('.container');
+  const headerTitle = header?.querySelector('#logo-text');
+  const menuItems = header?.querySelectorAll('.menu-item');
+  let lastScrollY = window.scrollY;
+  
+  function updateHeader() {
+    const scrollY = window.scrollY;
+    
+    if (scrollY > 50) {
+      headerContainer?.classList.add('backdrop-blur-md', 'bg-accent-background/50', 'py-2', 'mt-2', 'w-[calc(100%-40px)]');
+      headerContainer?.classList.remove('bg-transparent', 'py-7');
+      headerTitle?.classList.add('text-accent-headings');
+      menuItems?.forEach(item => item.classList.add('text-accent-headings'));
+    } else {
+      headerContainer?.classList.remove('backdrop-blur-md', 'bg-accent-background/50', 'py-2', 'mt-2', 'max-sm:w-[calc(100%-40px)]');
+      headerContainer ?.classList.add('bg-transparent', 'py-7');
+      headerTitle?.classList.remove('text-accent-headings');
+      menuItems?.forEach(item => item.classList.remove('text-accent-headings'));
+    }
+    
+    lastScrollY = scrollY;
+  }
+  
+  window.addEventListener('scroll', updateHeader, { passive: true });
+  
+  // Initial check
+  updateHeader();
+</script>

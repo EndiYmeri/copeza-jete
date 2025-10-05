@@ -1,23 +1,32 @@
 ---
-import anna from "../assets/anna.jpeg";
+import anna from "../assets/anna.jpg";
 import { Image } from "astro:assets"; // For optimized images, optional but recommended
 ---
 
-<section class="flex flex-col mx-auto px-5 py-5 h-dvh container">
-  <div class="my-5 h-min text-center">Tirana, Albania</div>
-  <div class="gap-2 grid lg:grid-cols-2 h-full">
+<section id="about" class="flex flex-col mx-auto px-5 py-5 lg:h-dvh container scroll-mt-0">
+  <div class="gap-2 grid items-center lg:grid-cols-2 h-full">
     <div class="order-1 lg:order-0">
       <Image
         src={anna}
         alt="Anna's portrait"
-        class="w-full h-full object-cover"
+        class="w-full h-full object-cover rounded-lg"
       />
     </div>
-    <div class="place-content-center-safe grid p-10 h-full">
-      <p>
-        Ckemi jam Anna dhe jam fotografe, jam e fejuara Endit -> cuni qe ka bo
-        website-in
-      </p>
-    </div>
+      <div class=" grid p-10 h-full grid-rows-[1fr_auto]">
+        <div class="place-content-center grid">
+          <div class="space-y-6">
+            <p class="text-lg leading-relaxed text-accent-paragraphs">
+              Përshëndetje! Jam Anna-Maria, jam një fotografe qe per rreth 5 vite ka shkrepur me shume pasion cdo moment dhe copëza jete. Çdo fotografi është një histori që tregon, një moment që nuk do të përsëritet kurrë.
+            </p>
+            <p class="text-lg leading-relaxed text-accent-paragraphs">
+              Specializohem në fotografi artistike natyre, ku çdo imazh është një vepër arti që reflekton emocionet dhe bukurinë e çastit. Nga dritat e mëngjesit në malet e larta deri te detajet e holla të natyres, çdo fotografi është një copëz jete e shndërruar në art.
+            </p>
+            <p class="text-lg leading-relaxed text-accent-paragraphs">
+              Me mbështetjen e partnerit tim Endi, që ka krijuar këtë platformë, vazhdoj të ndaj pasionin tim me ju përmes çdo fotografie që kap.
+            </p>
+          </div>
+        </div>
+        <div class="my-5 h-min text-center self-end text-accent-details">Tirana, Albania</div>
+      </div>
   </div>
 </section>

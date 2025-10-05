@@ -130,7 +130,7 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
       className={`scroll-smooth my-5 ${containerClassName}`}
     >
       <p
-        className={`scr-rvl-trigger text-[clamp(2.3rem,4vw,3.5rem)] text-black leading-[1.5] font-semibold ${textClassName}`}
+        className={`scr-rvl-trigger text-[clamp(1.3rem,4vw,3.5rem)] text-black leading-[1.2] tracking-tight font-roboto-mono font-semibold ${textClassName}`}
       >
         {splitText}
       </p>

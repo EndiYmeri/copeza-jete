@@ -2,7 +2,6 @@
 // src/components/SwiperCarousel.astro
 import { Image } from "astro:assets"; // For optimized images, optional but recommended
 import type { HTMLAttributes } from "astro/types";
-import TrueFocus from "./ReactBits/TrueFocus";
 
 // Define the props for the component
 interface Props extends HTMLAttributes<"div"> {
@@ -22,15 +21,11 @@ interface Props extends HTMLAttributes<"div"> {
 
 const {
   slides,
-
-  class: className, // Rename 'class' to 'className' to avoid conflict, if needed
-  ...attrs // Capture any extra div attributes
+  class: className,
+  ...attrs
 } = Astro.props;
 
-// Serialize complex props into data attributes for the client-side script
-// This is crucial for passing non-string/number values
-
-// Use JSON.stringify to pass the config object to a data attribute
+const slidesLength = slides.length > 9 ? slides.length : `0${slides.length}`;
 ---
 
 <div class:list={["swiper-container", className]} {...attrs}>
@@ -65,7 +60,7 @@ const {
     >
       <div class="hero-slide-next-button-current-slide">01</div>
       <div>/</div>
-      <div class="hero-slide-next-button-slide-length">05</div>
+      <div class="hero-slide-next-button-slide-length">{slidesLength}</div>
     </div>
     <div class="swiper-button-next">
       <div class="justify-center gap-2 grid text-center">
@@ -75,13 +70,13 @@ const {
           01
         </div>
         <div
-          class="relative border-accent-background before:!border-accent-background after:!border-accent-background border-b w-[110px] next-button-arrow"
+          class="relative border-accent-background before:!border-accent-background after:!border-accent-background border-b w-[110px] transition-all duration-300 next-button-arrow"
         >
         </div>
         <div
           class="max-md:hidden text-accent-background hero-slide-next-button-slide-length"
         >
-          05
+          {slidesLength}
         </div>
       </div>
     </div>
@@ -100,7 +95,7 @@ const {
     width: 100%;
     max-width: 100vw; /* Limit max width for better presentation */
     margin: 0 auto;
-    height: 100dvh; /* Full height for the container */
+    height: 100%; /* Full height for the container */
     position: relative; /* Needed for navigation/pagination positioning */
     overflow: hidden; /* Hide overflow from slides */
   }
@@ -146,8 +141,8 @@ const {
 
   .prev-button-arrow::before {
     content: "";
-    width: 10px;
-    border-bottom: 1px solid;
+    width: 15px;
+    border-bottom: 2px solid;
     position: absolute;
     transform-origin: 0%;
     left: 0;
@@ -155,8 +150,8 @@ const {
   }
   .prev-button-arrow::after {
     content: "";
-    width: 10px;
-    border-bottom: 1px solid;
+    width: 15px;
+    border-bottom: 2px solid;
     position: absolute;
     left: 0;
     transform-origin: 0%;
@@ -164,8 +159,8 @@ const {
   }
   .next-button-arrow::before {
     content: "";
-    width: 10px;
-    border-bottom: 1px solid;
+    width: 15px;
+    border-bottom: 2px solid;
     position: absolute;
     transform-origin: 100%;
     right: 0;
@@ -173,12 +168,46 @@ const {
   }
   .next-button-arrow::after {
     content: "";
-    width: 10px;
-    border-bottom: 1px solid;
+    width: 15px;
+    border-bottom: 2px solid;
     position: absolute;
     right: 0;
     transform-origin: 100%;
     transform: rotate(45deg);
+  }
+
+  /* Light animation for navigation buttons on hover */
+  .swiper-button-next,
+  .swiper-button-prev {
+    transition: all 0.3s ease;
+    position: relative;
+  }
+
+  .swiper-button-next:hover {
+    transform: translateX(5px);
+  }
+
+  .swiper-button-prev:hover {
+    transform: translateX(-5px);
+  }
+
+  .swiper-button-next:hover .next-button-arrow {
+    width: 120px;
+  }
+
+  .swiper-button-prev:hover .prev-button-arrow {
+    width: 120px;
+  }
+
+  /* Scale numbers on hover */
+  .hero-slide-next-button-current-slide,
+  .hero-slide-next-button-slide-length {
+    transition: transform 0.3s ease;
+  }
+
+  .swiper-button-next:hover .hero-slide-next-button-current-slide,
+  .swiper-button-next:hover .hero-slide-next-button-slide-length {
+    transform: scale(1.2);
   }
 
   .swiper-button-prev:after,
@@ -188,7 +217,7 @@ const {
 
   /* Custom styling for pagination bullets (optional) */
   .swiper-pagination-bullet-active {
-    background: #007aff;
+    background: var(--color-accent-background);
   }
 </style>
 

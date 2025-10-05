@@ -1,9 +1,10 @@
 ---
-import pages from "../config/pages.json";
 import CategoryLayout from "../layouts/CategoryLayout.astro";
 import type { MasonryImages, WordPressImageDetails } from "../types/image"; // Ensure WordPressImageDetails is imported
 import { getMediaDetails } from "../utils/helpers"; // Assuming getMediaDetails extracts source_url
 import { getImageByID } from "../utils/wordpressAPI"; // Assuming getImageByID fetches image data
+
+const pages = [{slug: "pregnancy", title: "Pregnancy"}, {slug: "babies", title: "Babies"}, {slug: "family", title: "Family"}, {slug: "events", title: "Events"}, {slug: "portraits", title: "Portraits"}, {slug: "nature", title: "Nature"}];
 
 export function getStaticPaths() {
   return pages.map((page) => {
@@ -56,10 +57,6 @@ if (foundPage) {
     return detailedImages;
   };
 
-  masonryImages.col1 = await fetchColumnImages(foundPage.masonryGrid?.column_1);
-  masonryImages.col2 = await fetchColumnImages(foundPage.masonryGrid?.column_2);
-  masonryImages.col3 = await fetchColumnImages(foundPage.masonryGrid?.column_3);
-  masonryImages.col4 = await fetchColumnImages(foundPage.masonryGrid?.column_4);
 }
 
 // Filter out any potential undefined or null URLs and ensure uniqueness
