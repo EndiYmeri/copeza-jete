@@ -3,7 +3,12 @@ import path from "node:path";
 import * as dotenv from "dotenv";
 import { getPages } from "./src/utils/wordpressAPI";
 import { pagesTransformer } from "./src/utils/helpers";
-dotenv.config();
+
+try {
+  dotenv.config();
+} catch (error) {
+  console.warn("Could not load .env file:", error);
+}
 
 export const downloadWordpressDataToJSON = async () => {
   try {

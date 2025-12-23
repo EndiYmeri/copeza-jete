@@ -9,7 +9,7 @@ function wordpressAPIIntegration() {
   return {
     name: "Use wp api",
     hooks: {
-      "astro:build:done": async () => {
+      "astro:build:start": async () => {
         // Call your custom function here
         await downloadWordpressDataToJSON();
       },

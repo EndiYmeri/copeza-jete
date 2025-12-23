@@ -1,6 +1,18 @@
 ---
 import MenuLink from "./common/MenuLink.astro";
 
+
+const menuItems = [
+  {
+    label: "Sets",
+    href: "#",
+  },
+  {
+    label: "Contact",
+    href: "/contact",
+  },
+];
+
 ---
 
 <header id="main-header" class="z-50 fixed bg-transparent w-full">
@@ -13,8 +25,11 @@ import MenuLink from "./common/MenuLink.astro";
         >Copëza Jete</a
       >
       <div class="hidden md:flex">
-        <MenuLink class={'menu-item'}>Sete</MenuLink>
-        <MenuLink class={'menu-item'}>Kontakt</MenuLink>
+        {
+          menuItems.map((item) => (
+            <MenuLink class={'menu-item'} href={item.href}>{item.label}</MenuLink>
+          ))
+        }
       </div>
     </div>
   </div>

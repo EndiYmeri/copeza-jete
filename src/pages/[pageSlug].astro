@@ -4,17 +4,29 @@ import type { MasonryImages, WordPressImageDetails } from "../types/image"; // E
 import { getMediaDetails } from "../utils/helpers"; // Assuming getMediaDetails extracts source_url
 import { getImageByID } from "../utils/wordpressAPI"; // Assuming getImageByID fetches image data
 
-const pages = [{slug: "pregnancy", title: "Pregnancy"}, {slug: "babies", title: "Babies"}, {slug: "family", title: "Family"}, {slug: "events", title: "Events"}, {slug: "portraits", title: "Portraits"}, {slug: "nature", title: "Nature"}];
 
-export function getStaticPaths() {
+export async function getStaticPaths() {
+  const pages = [
+  { slug: "pregnancy", title: "Pregnancy" },
+  { slug: "babies", title: "Babies" },
+  { slug: "family", title: "Family" },
+  { slug: "events", title: "Events" },
+  { slug: "portraits", title: "Portraits" },
+  { slug: "nature", title: "Nature" },
+];
+
   return pages.map((page) => {
-    return { params: { pageSlug: page.slug } };
+    return {
+      params: { pageSlug: page.slug },
+      props: { page },
+    };
   });
 }
-const { pageSlug } = Astro.params;
 
-console.log({ pageSlug });
-const foundPage = pages.find((page) => page.slug === pageSlug);
+const { pageSlug } = Astro.params;
+const page = Astro.props.page;
+
+const foundPage = page;
 
 let masonryImages: MasonryImages = {
   col1: [],
@@ -25,39 +37,6 @@ let masonryImages: MasonryImages = {
 
 // Array to collect all image URLs for preloading
 let allImageUrls: string[] = [];
-
-if (foundPage) {
-  // Helper to fetch images for a column and add their URLs to the preload list
-  const fetchColumnImages = async (
-    columnData: Array<{ image: number }> | undefined
-  ) => {
-    if (!columnData) return [];
-    const imagePromises = columnData.map((colImage) =>
-      getImageByID(colImage.image)
-    );
-    const fetchedImages = await Promise.all(imagePromises);
-    const detailedImages = fetchedImages.map((image) => getMediaDetails(image));
-
-    // Add the specific URL used by CustomImage to the preload list
-    detailedImages.forEach((img) => {
-      // Assuming getMediaDetails returns an object like WordPressImageDetails
-      // and CustomImage uses the medium_large size on inner pages
-      if (img?.medium_large?.source_url) {
-        allImageUrls.push(img.medium_large.source_url);
-      } else if (typeof img === "string") {
-        // Fallback if getMediaDetails sometimes returns just a URL
-        allImageUrls.push(img);
-      }
-      // Add other sizes if needed for different viewports or uses
-      // if (img?.full?.source_url) {
-      //     allImageUrls.push(img.full.source_url);
-      // }
-    });
-
-    return detailedImages;
-  };
-
-}
 
 // Filter out any potential undefined or null URLs and ensure uniqueness
 const uniqueImageUrls = [

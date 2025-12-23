@@ -1,5 +1,10 @@
 import * as dotenv from "dotenv";
-dotenv.config();
+
+try {
+  dotenv.config();
+} catch (error) {
+  console.warn("Could not load .env file:", error);
+}
 
 const WP_DOMAIN = process.env.WP_DOMAIN;
 
