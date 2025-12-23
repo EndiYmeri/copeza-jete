@@ -6,6 +6,7 @@ import ScrollReveal from '../components/ui/ScrollReveal'
 import Facts from '../components/Facts.astro'
 import AboutUs from '../components/AboutUs.astro'
 import { FocusCards } from '../components/ui/FocusCards'
+import Process from '../components/Process.astro'
 
 const imagesIDs: { image: number }[] = [
   {
@@ -46,10 +47,13 @@ const cards = imagesData.map((image) => ({
 <BaseLayout siteTitle='Copëza Jete | Kreu' siteDescription='fotograf, fotografi natyre, foto artistike'>
   <div id='smooth-wrapper'>
     <div id='smooth-content'>
-      <Hero />
-      <AboutUs />
-      <FocusCards cards={cards} client:idle />
-      <div class='mx-auto scroll-mt-0 container'>
+      <Hero dataSpeed={'clamp(0.8)'} />
+      <AboutUs dataSpeed={'clamp(0.9)'} />
+      <div data-speed={'2'}>
+        <FocusCards cards={cards} client:idle />
+      </div>
+      <Process />
+      <!-- <div data-speed={'clamp(1.6)'} class='mx-auto scroll-mt-0 container'>
         <ScrollReveal
           client:only
           baseOpacity={0}
@@ -62,7 +66,7 @@ const cards = imagesData.map((image) => ({
           Më shumë se një imazh, një copëz jete. Çdo fotografi ka një histori për të treguar. Ajo kap thelbin e
           momenteve, duke i shndërruar ato në kujtime që do t'i mbani përjetësisht. Një copëz jete e shndërruar në art.
         </ScrollReveal>
-      </div>
+      </div> -->
 
       <Facts />
     </div>
