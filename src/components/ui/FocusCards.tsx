@@ -18,35 +18,34 @@ export const Card = React.memo(
     card,
     index,
     hovered,
-    setHovered,
+    setHovered
   }: {
-    card: any;
-    index: number;
-    hovered: number | null;
-    setHovered: React.Dispatch<React.SetStateAction<number | null>>;
+    card: any
+    index: number
+    hovered: number | null
+    setHovered: React.Dispatch<React.SetStateAction<number | null>>
   }) => (
     <div
       onMouseEnter={() => setHovered(index)}
       onMouseLeave={() => setHovered(null)}
       className={cn(
-        "rounded-lg relative bg-gray-100 dark:bg-neutral-900 overflow-hidden h-[500px] w-full transition-all duration-300 ease-out",
-        hovered !== null && hovered !== index && "blur-sm scale-[0.98]"
+        'relative bg-gray-100 dark:bg-neutral-900 rounded-lg w-full h-[500px] overflow-hidden transition-all duration-300 ease-out',
+        hovered !== null && hovered !== index && 'blur-sm scale-[0.98]'
       )}
     >
-      <img
-        src={card.src}
-        alt={card.title}
-        className="object-cover absolute inset-0"
-      />
+      <img src={card.src} alt={card.title} className='absolute inset-0 w-full h-full object-cover' />
       <div
         className={cn(
-          "absolute inset-0 bg-black/50 flex items-end py-8 px-4 transition-opacity duration-300",
-          hovered === index ? "opacity-100" : "opacity-0"
+          'absolute inset-0 flex items-end bg-black/50 px-4 py-8 transition-opacity duration-300',
+          hovered === index ? 'opacity-100' : 'opacity-0'
         )}
       >
-        <a href={`/sete/${card.category}`} className="text-xl md:text-2xl font-medium bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-200 group gap-3">
+        <a
+          href={`/sete/${card.category}`}
+          className='group gap-3 bg-clip-text bg-gradient-to-b from-neutral-50 to-neutral-200 font-medium text-transparent text-xl md:text-2xl'
+        >
           {card.title}
-        
+
           <AnimatePresence>
             {hovered === index && (
               <motion.div
@@ -54,14 +53,14 @@ export const Card = React.memo(
                 animate={{ opacity: 1, x: 0, scale: 1 }}
                 exit={{ opacity: 0, x: -5, scale: 0.8 }}
                 transition={{
-                  type: "spring",
+                  type: 'spring',
                   stiffness: 300,
                   damping: 30,
                   duration: 0.6
                 }}
-                className="ml-[10px]  inline-flex"
+                className='inline-flex ml-[10px]'
               >
-                <HandDrawnArrow/>
+                <HandDrawnArrow />
               </motion.div>
             )}
           </AnimatePresence>
@@ -69,30 +68,24 @@ export const Card = React.memo(
       </div>
     </div>
   )
-);
+)
 
-Card.displayName = "Card";
+Card.displayName = 'Card'
 
 type Card = {
-  title: string;
-  src: string;
-  category: string;
-};
+  title: string
+  src: string
+  category: string
+}
 
 export function FocusCards({ cards }: { cards: Card[] }) {
-  const [hovered, setHovered] = useState<number | null>(null);
+  const [hovered, setHovered] = useState<number | null>(null)
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-10 container mx-auto px-5 w-full">
+    <div className='gap-10 grid grid-cols-1 md:grid-cols-3 mx-auto px-5 w-full container'>
       {cards.map((card, index) => (
-        <Card
-          key={card.title}
-          card={card}
-          index={index}
-          hovered={hovered}
-          setHovered={setHovered}
-        />
+        <Card key={index} card={card} index={index} hovered={hovered} setHovered={setHovered} />
       ))}
     </div>
-  );
+  )
 }

@@ -1,74 +1,87 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import Hero from "../components/Hero.astro";
-import { getImageByID } from "../utils/wordpressAPI";
-import ScrollReveal from "../components/ui/ScrollReveal";
-import Facts from "../components/Facts.astro";
-import AboutUs from "../components/AboutUs.astro";
-import { FocusCards } from "../components/ui/FocusCards";
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Hero from '../components/Hero.astro'
+import { getImageByID } from '../utils/wordpressAPI'
+import ScrollReveal from '../components/ui/ScrollReveal'
+import Facts from '../components/Facts.astro'
+import AboutUs from '../components/AboutUs.astro'
+import { FocusCards } from '../components/ui/FocusCards'
 
 const imagesIDs: { image: number }[] = [
   {
-    image: 45,
+    image: 45
   },
   {
-    image: 41,
+    image: 41
   },
   {
-    image: 42,
+    image: 42
   },
   {
-    image: 67,
+    image: 67
   },
   {
-    image: 68,
+    image: 68
   },
   {
-    image: 69,
+    image: 69
   },
   {
-    image: 65,
-  },
-];
+    image: 65
+  }
+]
 
 const getImagesByIDs = async (imageIDs: { image: number }[]) => {
-  const promises = imageIDs.map((imageID) => getImageByID(imageID.image));
-  return await Promise.all(promises);
-};
-const imagesData = await getImagesByIDs(imagesIDs);
+  const promises = imageIDs.map((imageID) => getImageByID(imageID.image))
+  return await Promise.all(promises)
+}
+const imagesData = await getImagesByIDs(imagesIDs)
 const cards = imagesData.map((image) => ({
   title: image.title.rendered,
   src: image.media_details.sizes.medium_large.source_url,
-  category: image.acf.category,
-}));
-
+  category: image.acf.category
+}))
 ---
 
-<BaseLayout
-  siteTitle="Copëza Jete | Kreu"
-  siteDescription="fotograf, fotografi natyre, foto artistike"
->
-  <Hero />
-  <AboutUs />
-  <FocusCards cards={cards} client:idle/>
-  <div class="mx-auto container scroll-mt-0">
-    <ScrollReveal
-      client:only
-      baseOpacity={0}
-      enableBlur={true}
-      baseRotation={0}
-      blurStrength={10}
-      textClassName="text-center"
-      containerClassName="px-4 h-[40dvh] lg:h-dvh place-content-center grid"
-    >
-      Më shumë se një imazh, një copëz jete. Çdo fotografi ka një histori për të
-      treguar. Ajo kap thelbin e momenteve, duke i shndërruar ato në kujtime që
-      do t'i mbani përjetësisht. Një copëz jete e shndërruar në art.
-    </ScrollReveal>
+<BaseLayout siteTitle='Copëza Jete | Kreu' siteDescription='fotograf, fotografi natyre, foto artistike'>
+  <div id='smooth-wrapper'>
+    <div id='smooth-content'>
+      <Hero />
+      <AboutUs />
+      <FocusCards cards={cards} client:idle />
+      <div class='mx-auto scroll-mt-0 container'>
+        <ScrollReveal
+          client:only
+          baseOpacity={0}
+          enableBlur={true}
+          baseRotation={0}
+          blurStrength={10}
+          textClassName='text-center'
+          containerClassName='px-4 h-[40dvh] lg:h-dvh place-content-center grid'
+        >
+          Më shumë se një imazh, një copëz jete. Çdo fotografi ka një histori për të treguar. Ajo kap thelbin e
+          momenteve, duke i shndërruar ato në kujtime që do t'i mbani përjetësisht. Një copëz jete e shndërruar në art.
+        </ScrollReveal>
+      </div>
+
+      <Facts />
+    </div>
   </div>
- 
-
-  <Facts />
-
   <!-- <FactsReact client:only /> -->
+
+  <script>
+    import { gsap } from 'gsap'
+    import { ScrollTrigger } from 'gsap/ScrollTrigger'
+    import { ScrollSmoother } from 'gsap/ScrollSmoother'
+
+    gsap.registerPlugin(ScrollTrigger, ScrollSmoother)
+
+    let smoother = ScrollSmoother.create({
+      smooth: 1.5,
+      effects: true,
+      speed: 0.5,
+      wrapper: '#smooth-wrapper',
+      content: '#smooth-content'
+    })
+  </script>
 </BaseLayout>
