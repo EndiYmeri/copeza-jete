@@ -49,10 +49,10 @@ const cards = imagesData.map((image) => ({
     <div id='smooth-content'>
       <Hero dataSpeed={'clamp(0.8)'} />
       <AboutUs dataSpeed={'clamp(0.9)'} />
+      <Process />
       <div data-speed={'2'}>
         <FocusCards cards={cards} client:idle />
       </div>
-      <Process />
       <!-- <div data-speed={'clamp(1.6)'} class='mx-auto scroll-mt-0 container'>
         <ScrollReveal
           client:only
